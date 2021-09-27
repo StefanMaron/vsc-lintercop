@@ -8,7 +8,7 @@ $latestRelease.assets[0].browser_download_url
 $lastVersionTimeStamp = ''
 $lastVersionTimeStamp = Get-Content -Path (Join-Path $PSScriptRoot 'lastversion.txt') -ErrorAction SilentlyContinue
 
-if ($lastVersionTimeStamp -ne '') {
+if ($lastVersionTimeStamp -eq '') {
     $lastVersionTimeStamp = '0001-01-01T00:00:00Z'
 
 }
