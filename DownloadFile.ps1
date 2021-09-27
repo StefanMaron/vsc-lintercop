@@ -14,7 +14,9 @@ if ($lastVersionTimeStamp -ne '') {
 }
 
 if (((Get-Date $lastVersionTimeStamp) -lt (Get-Date $latestRelease.assets[0].updated_at )) -or (-not (Test-Path $TargetPath -PathType leaf))) {
-    Remove-Item -Path $TargetPath -Force
+    if (Test-Path $TargetPath -PathType leaf) {
+        Remove-Item -Path $TargetPath -Force
+    }
     Invoke-WebRequest -Uri $latestRelease.assets[0].browser_download_url -OutFile $TargetPath
     Set-Content -Value $latestRelease.assets[0].updated_at -Path (Join-Path $PSScriptRoot 'lastversion.txt')
     return 1
