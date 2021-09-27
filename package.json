@@ -26,7 +26,7 @@
 	],
 	"activationEvents": [
 		"onCommand:businesscentral-lintercop.downloadCop",
-		"onLanguage:al"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
