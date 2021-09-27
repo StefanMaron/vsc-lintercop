@@ -9,14 +9,14 @@ $lastVersionTimeStamp = ''
 $lastVersionTimeStamp = Get-Content -Path (Join-Path $PSScriptRoot 'lastversion.txt') -ErrorAction SilentlyContinue
 
 if ($lastVersionTimeStamp -ne '') {
-$lastVersionTimeStamp = '0001-01-01T00:00:00Z'
+    $lastVersionTimeStamp = '0001-01-01T00:00:00Z'
 
 }
 
-if (((Get-Date $lastVersionTimeStamp) -lt (Get-Date $latestRelease.published_at )) -or (-not (Test-Path $TargetPath -PathType leaf))) {
+if (((Get-Date $lastVersionTimeStamp) -lt (Get-Date $latestRelease.assets[0].updated_at )) -or (-not (Test-Path $TargetPath -PathType leaf))) {
     Remove-Item -Path $TargetPath -Force
     Invoke-WebRequest -Uri $latestRelease.assets[0].browser_download_url -OutFile $TargetPath
-    Set-Content -Value $latestRelease.published_at -Path (Join-Path $PSScriptRoot 'lastversion.txt')
+    Set-Content -Value $latestRelease.assets[0].updated_at -Path (Join-Path $PSScriptRoot 'lastversion.txt')
     return 1
 }
 
