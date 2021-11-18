@@ -1,23 +1,26 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { stdout } from 'process';
-import * as vscode from 'vscode';
+import { stat } from 'fs';
+import { userInfo } from 'os';
+import { off, stdout } from 'process';
+import { window, StatusBarItem, StatusBarAlignment, ExtensionContext, commands, extensions, workspace, QuickPickItem, ConfigurationTarget, ConfigurationScope } from "vscode";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "businesscentral-lintercop" is now active!');
+	var statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('businesscentral-lintercop.downloadCop', async () => {
+	let disposable = commands.registerCommand('businesscentral-lintercop.downloadCop', async () => {
 		const { exec } = require('child_process');
-		var lintercop = vscode.extensions.getExtension("stefanmaron.businesscentral-lintercop");
-		var AlExtension = vscode.extensions.getExtension("ms-dynamics-smb.al");
+		var lintercop = extensions.getExtension("stefanmaron.businesscentral-lintercop");
+		var AlExtension = extensions.getExtension("ms-dynamics-smb.al");
 
 		if (lintercop && AlExtension) {
 			var DownloadScript = lintercop.extensionPath + '/DownloadFile.ps1';
@@ -25,20 +28,89 @@ export function activate(context: vscode.ExtensionContext) {
 			var retvalue = exec(`. "${DownloadScript}" "${targetPath}`, { 'shell': 'powershell.exe' }, (error: string, stdout: string, stderr: string) => {
 				var results = stdout.split("\n")
 				if (results[1].trim() == "1") {
-					vscode.window.showInformationMessage(`BusinessCentral.LinterCop was downloaded successfully to ${targetPath}`)
+					window.showInformationMessage(`BusinessCentral.LinterCop was downloaded successfully to ${targetPath}`)
 				}
 			})
-			vscode.window.showInformationMessage(retvalue)
+			window.showInformationMessage(retvalue)
 		}
 	});
 	context.subscriptions.push(disposable);
+	var uri = null;
+	if (window.activeTextEditor)
+		uri = window.activeTextEditor.document.uri;
+	var currentAnalyzerSettings = workspace.getConfiguration('al', uri).inspect('codeAnalyzers');
+	var activeAnalyzers = (workspace.getConfiguration('al', uri).get('codeAnalyzers') + '' as String).split(',');
+	SetStatusBar(statusBarItem);
 
-	const linterCopConfig = vscode.workspace.getConfiguration('linterCop')
+	var currentConfigTarget = ConfigurationTarget.WorkspaceFolder;
+
+	disposable = commands.registerCommand('businesscentral-lintercop.selectAnalysers', async () => {
+		var uri = null;
+		if (window.activeTextEditor)
+			uri = window.activeTextEditor.document.uri;
+		currentAnalyzerSettings = workspace.getConfiguration('al', uri).inspect('codeAnalyzers');
+		activeAnalyzers = (workspace.getConfiguration('al', uri).get('codeAnalyzers') + '' as String).split(',');
+
+		if (currentAnalyzerSettings?.globalValue)
+			currentConfigTarget = ConfigurationTarget.Global;
+		if (currentAnalyzerSettings?.workspaceValue)
+			currentConfigTarget = ConfigurationTarget.Workspace;
+		if (currentAnalyzerSettings?.workspaceFolderValue)
+			currentConfigTarget = ConfigurationTarget.WorkspaceFolder;
+
+		var analyzers = await window.showQuickPick(
+			[
+				{ label: 'CodeCop', setting: '${CodeCop}', picked: activeAnalyzers.includes('${CodeCop}') },
+				{ label: 'UICop', setting: '${UICop}', picked: activeAnalyzers.includes('${UICop}') },
+				{ label: 'PerTenantExtensionCop', setting: '${PerTenantExtensionCop}', picked: activeAnalyzers.includes('${PerTenantExtensionCop}') },
+				{ label: 'AppSourceCop', setting: '${AppSourceCop}', picked: activeAnalyzers.includes('${AppSourceCop}') },
+				{ label: 'BusinessCentral.LinterCop', setting: '${analyzerFolder}BusinessCentral.LinterCop.dll', picked: activeAnalyzers.includes('${analyzerFolder}BusinessCentral.LinterCop.dll') }
+			],
+			{ placeHolder: 'Select the view to show when opening a window.', canPickMany: true });
+
+		if (analyzers) {
+			var analyzersArray = ([] as string[]).concat.apply([] as string[], analyzers.map(item => item.setting))
+			await workspace.getConfiguration('al', uri).update('codeAnalyzers', analyzersArray, currentConfigTarget);
+		}
+		SetStatusBar(statusBarItem);
+	});
+	context.subscriptions.push(disposable);
+
+	const linterCopConfig = workspace.getConfiguration('linterCop')
 	const autoDownload = linterCopConfig.get('autoDownload')
 
+	window.onDidChangeActiveTextEditor(e => SetStatusBar(statusBarItem));
+
 	if (autoDownload) {
-		vscode.commands.executeCommand('businesscentral-lintercop.downloadCop');
+		commands.executeCommand('businesscentral-lintercop.downloadCop');
 	}
+}
+
+function SetStatusBar(statusBarItem: StatusBarItem) {
+	var activeAnalyzersShort = '';
+	var uri = null;
+	if (window.activeTextEditor)
+		uri = window.activeTextEditor.document.uri;
+	var activeAnalyzers = (workspace.getConfiguration('al', uri).get('codeAnalyzers') + '' as String).split(',');
+	if (activeAnalyzers.includes('${CodeCop}')) {
+		activeAnalyzersShort += 'Code/';
+	}
+	if (activeAnalyzers.includes('${UICop}')) {
+		activeAnalyzersShort += 'UI/';
+	}
+	if (activeAnalyzers.includes('${PerTenantExtensionCop}')) {
+		activeAnalyzersShort += 'PTE/';
+	}
+	if (activeAnalyzers.includes('${AppSourceCop}')) {
+		activeAnalyzersShort += 'AppSrc/';
+	}
+	if (activeAnalyzers.includes('${analyzerFolder}BusinessCentral.LinterCop.dll')) {
+		activeAnalyzersShort += 'BcLntr/';
+	}
+	activeAnalyzersShort = activeAnalyzersShort.substr(0, activeAnalyzersShort.length - 1);
+	statusBarItem.command = 'businesscentral-lintercop.selectAnalysers';
+	statusBarItem.text = 'AL Cops: ' + activeAnalyzersShort;
+	statusBarItem.show();
 }
 
 // this method is called when your extension is deactivated

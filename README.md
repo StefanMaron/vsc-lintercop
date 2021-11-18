@@ -5,15 +5,13 @@ This extensions provides auto updates for the BusinessCentral.LinterCop. This co
 By default the extension checks if the dll is still there (and did not get deleted due to updates of the AL Extension) and if a new version is released.
 If one case is true, the latest version of the dll will be downloaded.
 
-In order to activate the LinterCop you need to add this line `"${analyzerfolder}BusinessCentral.LinterCop.dll"` to the `"al.codeAnalyzers"`. For example like this:
+In order to activate the LinterCop all you need to do is, to click the `AL Cop` indicator on the bottom bar which shows the active code analyzers for the current settings context:  
+![bottom_bar](res\bottombar.png)
 
-```
-"al.codeAnalyzers": [
-    "${CodeCop}",
-    "${UICop}",
-    "${analyzerfolder}BusinessCentral.LinterCop.dll"
-],
-```
+This will open a menu where you can select the BusinessCentral.LinterCop. When you confirm with `OK` the new config will be saved in your active settings file.
+![CopSelection](res\CopSelection.png)
+
+Note: The bottom bar will always show you which AL analyzers are currently active for the file you are editing.
 
 ## Extension Settings
 
