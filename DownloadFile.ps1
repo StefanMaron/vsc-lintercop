@@ -1,9 +1,17 @@
 param (
-    $TargetPath
+    $TargetPath,
+    $prerelease
 )
 $ErrorActionPreference = 'Stop'
 
-$latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/StefanMaron/BusinessCentral.LinterCop/releases/latest"
+$latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/StefanMaron/BusinessCentral.LinterCop/releases"
+try {
+    $latestRelease = ($latestRelease | Where-Object { $_.prerelease -eq $prerelease })[0]    
+}
+catch {
+    $latestRelease = ($latestRelease | Where-Object { $_.prerelease -eq $false })[0]        
+}
+
 $latestRelease.assets[0].browser_download_url
 $lastVersionTimeStamp = ''
 $lastVersionTimeStamp = Get-Content -Path (Join-Path $PSScriptRoot 'lastversion.txt') -ErrorAction SilentlyContinue

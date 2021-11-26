@@ -13,6 +13,8 @@ export function activate(context: ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "businesscentral-lintercop" is now active!');
 	var statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
+	var uri = GetCurrentFileURI();
+	const linterCopConfig = workspace.getConfiguration('linterCop', uri)
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -23,9 +25,10 @@ export function activate(context: ExtensionContext) {
 		var AlExtension = extensions.getExtension("ms-dynamics-smb.al");
 
 		if (lintercop && AlExtension) {
+			const loadPreRelease = linterCopConfig.get('load-pre-releases')
 			var DownloadScript = lintercop.extensionPath + '/DownloadFile.ps1';
 			var targetPath = AlExtension.extensionPath + '/bin/Analyzers/BusinessCentral.LinterCop.dll"'
-			var retvalue = exec(`. "${DownloadScript}" "${targetPath}`, { 'shell': 'powershell.exe' }, (error: string, stdout: string, stderr: string) => {
+			var retvalue = exec(`. "${DownloadScript}" "${targetPath} "${loadPreRelease}"`, { 'shell': 'powershell.exe' }, (error: string, stdout: string, stderr: string) => {
 				var results = stdout.split("\n")
 				if (results[1].trim() == "1") {
 					window.showInformationMessage(`BusinessCentral.LinterCop was downloaded successfully to ${targetPath}`)
@@ -35,9 +38,7 @@ export function activate(context: ExtensionContext) {
 		}
 	});
 	context.subscriptions.push(disposable);
-	var uri = null;
-	if (window.activeTextEditor)
-		uri = window.activeTextEditor.document.uri;
+	uri = GetCurrentFileURI();
 	var currentAnalyzerSettings = workspace.getConfiguration('al', uri).inspect('codeAnalyzers');
 	var activeAnalyzers = (workspace.getConfiguration('al', uri).get('codeAnalyzers') + '' as String).split(',');
 	SetStatusBar(statusBarItem);
@@ -45,9 +46,7 @@ export function activate(context: ExtensionContext) {
 	var currentConfigTarget = ConfigurationTarget.WorkspaceFolder;
 
 	disposable = commands.registerCommand('businesscentral-lintercop.selectAnalysers', async () => {
-		var uri = null;
-		if (window.activeTextEditor)
-			uri = window.activeTextEditor.document.uri;
+		var uri = GetCurrentFileURI();
 		currentAnalyzerSettings = workspace.getConfiguration('al', uri).inspect('codeAnalyzers');
 		activeAnalyzers = (workspace.getConfiguration('al', uri).get('codeAnalyzers') + '' as String).split(',');
 
@@ -76,7 +75,6 @@ export function activate(context: ExtensionContext) {
 	});
 	context.subscriptions.push(disposable);
 
-	const linterCopConfig = workspace.getConfiguration('linterCop')
 	const autoDownload = linterCopConfig.get('autoDownload')
 
 	window.onDidChangeActiveTextEditor(e => SetStatusBar(statusBarItem));
@@ -84,6 +82,13 @@ export function activate(context: ExtensionContext) {
 	if (autoDownload) {
 		commands.executeCommand('businesscentral-lintercop.downloadCop');
 	}
+}
+
+function GetCurrentFileURI() {
+	var uri = null;
+	if (window.activeTextEditor)
+		uri = window.activeTextEditor.document.uri;
+	return uri;
 }
 
 function SetStatusBar(statusBarItem: StatusBarItem) {
