@@ -3,7 +3,8 @@
 	"displayName": "BusinessCentral.LinterCop",
 	"publisher": "stefanmaron",
 	"description": "Provides Linting for the AL Language (Business Central)",
-	"icon": "",
+	"license": "MIT",
+	"icon": "logo.png",
 	"keywords": [
 		"AL",
 		"Lint",
@@ -15,9 +16,9 @@
 		"CleanCode"
 	],
 	"repository": {
-		"url": "https://github.com/StefanMaron/BusinessCentral.LinterCop"
+		"url": "https://github.com/StefanMaron/vsc-lintercop"
 	},
-	"version": "0.0.8",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.46.0"
 	},
