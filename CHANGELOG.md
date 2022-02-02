@@ -2,6 +2,10 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.
 
+## [0.1.1]
+
+- bugfix in the download script preventing download of a release when prerelease is activated
+
 ## [0.1.0]
 
 - added license
