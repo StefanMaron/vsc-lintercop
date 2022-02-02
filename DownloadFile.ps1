@@ -5,10 +5,11 @@ param (
 $ErrorActionPreference = 'Stop'
 
 $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/StefanMaron/BusinessCentral.LinterCop/releases"
-try {
-    $latestRelease = ($latestRelease | Where-Object { $_.prerelease -eq $prerelease })[0]    
+
+if($prerelease){
+$latestRelease = $latestRelease[0]    
 }
-catch {
+else{
     $latestRelease = ($latestRelease | Where-Object { $_.prerelease -eq $false })[0]        
 }
 
