@@ -3,7 +3,7 @@
 import { stat } from 'fs';
 import { userInfo } from 'os';
 import { off, stdout } from 'process';
-import { window, StatusBarItem, StatusBarAlignment, ExtensionContext, commands, extensions, workspace, QuickPickItem, ConfigurationTarget, ConfigurationScope } from "vscode";
+import { window, env, Uri, StatusBarItem, StatusBarAlignment, ExtensionContext, commands, extensions, workspace, ConfigurationTarget } from "vscode";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -31,7 +31,13 @@ export function activate(context: ExtensionContext) {
 			var retvalue = exec(`. "${DownloadScript}" "${targetPath} "${loadPreRelease}"`, { 'shell': 'powershell.exe' }, (error: string, stdout: string, stderr: string) => {
 				var results = stdout.split("\n")
 				if (results[1].trim() == "1") {
-					window.showInformationMessage(`BusinessCentral.LinterCop was downloaded successfully to ${targetPath}`)
+					window
+						.showInformationMessage(`A new version of BusinessCentral.LinterCop was downloaded successfully.`, 'OK', 'Show release notes')
+						.then(selection => {
+							if (selection == 'Show release notes')
+								env.openExternal(Uri.parse('https://github.com/StefanMaron/BusinessCentral.LinterCop/releases'));
+						});
+
 				}
 			})
 			window.showInformationMessage(retvalue)
