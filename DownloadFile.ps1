@@ -14,12 +14,10 @@ else{
 }
 
 $latestRelease.assets[0].browser_download_url
-$lastVersionTimeStamp = ''
 $lastVersionTimeStamp = Get-Content -Path (Join-Path $PSScriptRoot 'lastversion.txt') -ErrorAction SilentlyContinue
 
-if ($lastVersionTimeStamp -eq '') {
+if ([string]::IsNullOrEmpty($lastVersionTimeStamp)) {
     $lastVersionTimeStamp = '0001-01-01T00:00:00Z'
-
 }
 
 if (((Get-Date $lastVersionTimeStamp) -lt (Get-Date $latestRelease.assets[0].updated_at )) -or (-not (Test-Path $TargetPath -PathType leaf))) {
