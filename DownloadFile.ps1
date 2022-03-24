@@ -6,20 +6,25 @@ $ErrorActionPreference = 'Stop'
 
 $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/StefanMaron/BusinessCentral.LinterCop/releases"
 
-if($prerelease){
-$latestRelease = $latestRelease[0]    
+if ($prerelease -eq "false") {
+    $prerelease = $false
 }
-else{
+else {
+    $prerelease = $true
+}
+
+if ($prerelease) {
+    $latestRelease = $latestRelease[0]    
+}
+else {
     $latestRelease = ($latestRelease | Where-Object { $_.prerelease -eq $false })[0]        
 }
 
 $latestRelease.assets[0].browser_download_url
-$lastVersionTimeStamp = ''
 $lastVersionTimeStamp = Get-Content -Path (Join-Path $PSScriptRoot 'lastversion.txt') -ErrorAction SilentlyContinue
 
-if ($lastVersionTimeStamp -eq '') {
+if ([string]::IsNullOrEmpty($lastVersionTimeStamp)) {
     $lastVersionTimeStamp = '0001-01-01T00:00:00Z'
-
 }
 
 if (((Get-Date $lastVersionTimeStamp) -lt (Get-Date $latestRelease.assets[0].updated_at )) -or (-not (Test-Path $TargetPath -PathType leaf))) {

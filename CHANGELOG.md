@@ -2,6 +2,14 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.
 
+## [0.1.3]
+
+- bugfix in download script leading to always download the prerelease if it is the latest
+
+## [0.1.2]
+
+- added link to the linter cop change log in message window thats shows up when a new version got loaded
+
 ## [0.1.1]
 
 - bugfix in the download script preventing download of a release when prerelease is activated
