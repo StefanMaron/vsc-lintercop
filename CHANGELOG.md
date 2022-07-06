@@ -2,6 +2,10 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.
 
+## [0.1.4]
+
+- digital signed for the PS downloadscript. To Use the extension it is now enough to have `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
+
 ## [0.1.3]
 
 - bugfix in download script leading to always download the prerelease if it is the latest
