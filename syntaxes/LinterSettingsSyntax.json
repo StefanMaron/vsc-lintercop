@@ -1,0 +1,42 @@
+{
+  "$id": "LinterCop Settings Syntax",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for the LinterCop.json file.",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "cyclomaticComplexetyThreshold": {
+      "description": "This setting is replaced by cyclomaticComplexityThreshold, due to misspelling.",
+      "type": "integer",
+      "default": 8,
+      "minimum": 0,
+      "deprecated": true
+    },
+    "maintainablityIndexThreshold": {
+      "description": "This setting is replaced by maintainabilityIndexThreshold, due to misspelling.",
+      "type": "integer",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 100,
+      "deprecated": true
+    },
+    "cyclomaticComplexityThreshold": {
+      "description": "The threshold value for the Cyclomatic Complexity check. Cyclomatic Complexity is a metric to show how complex a piece of code is. To calculate this value, the number of decisions or code paths is used. Used by LC0010. Default Value: 8",
+      "type": "integer",
+      "default": 8,
+      "minimum": 0
+    },
+    "maintainabilityIndexThreshold": {
+      "description": "The threshold value, between 0 and 100, for the Maintainability Index check. The Maintainability Index value represents the relative ease of maintaining the code. A high value means better maintainability. Default Value: 20",
+      "type": "integer",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 100
+    },
+    "enableRule0011ForTableFields": {
+      "description": "Enables the LC0011 rule for Table Fields. (Every object needs to specify a value for the Access property)",
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
