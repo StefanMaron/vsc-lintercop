@@ -37,6 +37,11 @@
       "description": "Enables the LC0011 rule for Table Fields. (Every object needs to specify a value for the Access property)",
       "type": "boolean",
       "default": false
+    },
+    "enableRule0016ForApiObjects": {
+      "description": "Enables the LC0016 rule for API objects. (Caption is missing)",
+      "type": "boolean",
+      "default": false
     }
   }
 }
