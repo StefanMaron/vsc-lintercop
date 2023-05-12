@@ -4,6 +4,9 @@ param (
 )
 $ErrorActionPreference = 'Stop'
 
+# Make sure that the current session supports TLS 1.2
+[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+
 $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/StefanMaron/BusinessCentral.LinterCop/releases"
 
 if ($prerelease -eq "false") {
