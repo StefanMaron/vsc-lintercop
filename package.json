@@ -18,7 +18,7 @@
 	"repository": {
 		"url": "https://github.com/StefanMaron/vsc-lintercop"
 	},
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"preview": true,
 	"engines": {
 		"vscode": "^1.70.0"
@@ -57,10 +57,10 @@
 		],
 		"jsonValidation": [
 			{
-			  "fileMatch": "LinterCop.json",
-			  "url": "./syntaxes/LinterSettingsSyntax.json"
+				"fileMatch": "LinterCop.json",
+				"url": "./syntaxes/LinterSettingsSyntax.json"
 			}
-		  ]
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

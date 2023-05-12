@@ -2,6 +2,13 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.
 
+## [0.1.5]
+
+- Json Syntax for LinterCop.json #7 thanks @jwikman
+- Always support TLS1.2 #8 thanks @jwikman 
+- Changed download script to load both, current and next major .dll
+
+
 ## [0.1.4]
 
 - digital signed for the PS downloadscript. To Use the extension it is now enough to have `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
