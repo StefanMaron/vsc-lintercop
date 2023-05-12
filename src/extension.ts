@@ -25,10 +25,20 @@ export function activate(context: ExtensionContext) {
 		var AlExtension = extensions.getExtension("ms-dynamics-smb.al");
 
 		if (lintercop && AlExtension) {
+			const os = require('os');
+			let executable = ''
+			
+			if (os.platform() == 'win32') {
+				executable = 'powershell.exe'
+			}
+			else {
+				executable = 'pwsh'
+			}
+
 			const loadPreRelease = linterCopConfig.get('load-pre-releases')
 			var DownloadScript = lintercop.extensionPath + '/DownloadFile.ps1';
 			var targetPath = AlExtension.extensionPath + '/bin/Analyzers/"'
-			var retvalue = exec(`. "${DownloadScript}" "${targetPath} "${loadPreRelease}"`, { 'shell': 'powershell.exe' }, (error: string, stdout: string, stderr: string) => {
+			var retvalue = exec(`. "${DownloadScript}" "${targetPath} "${loadPreRelease}"`, { 'shell': executable }, (error: string, stdout: string, stderr: string) => {
 				var results = stdout.split("\n")
 				if (results[1].trim() == "1") {
 					window
