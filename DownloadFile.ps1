@@ -43,7 +43,7 @@ $latestRelease.assets | ForEach-Object  {
         Invoke-WebRequest -Uri $asset.browser_download_url -OutFile (Join-Path $TargetPath $asset.name)
         
         if ($asset.name.EndsWith('current.dll')) {
-            Move-Item (Join-Path $TargetPath $asset.name) (Join-Path $TargetPath 'BusinessCentral.LinterCop.dll')
+            Move-Item (Join-Path $TargetPath $asset.name) (Join-Path $TargetPath 'BusinessCentral.LinterCop.dll') -force
         }
         Set-Content -Value $latestRelease.assets[0].updated_at -Path (Join-Path $PSScriptRoot 'lastversion.txt')
         return 1
