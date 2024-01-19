@@ -12,15 +12,19 @@ $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/StefanMaro
 if ($null -eq $prerelease) {
     $prerelease = $false
 }
-elseif ($prerelease.ToString().ToLower() -eq "false") {
-    $prerelease = $false
-}
-elseif ($prerelease.ToString().ToLower() -eq "true") {
-    $prerelease = $true
-}
 else {
-    Write-Host "Invalid value for parameter prerelease. Please provide True or False."
-    $prerelease = $false
+    Switch ($prerelease.ToString().ToLower()) {
+        "false" { 
+            $prerelease = $false
+        }
+        "true" {
+            $prerelease = $true
+        }
+        default {
+            Write-Host "Invalid value for parameter prerelease. Please provide True or False."
+            $prerelease = $false
+        }
+    }
 }
 
 if ($prerelease) {
@@ -64,8 +68,8 @@ return 0
 # SIG # Begin signature block
 # MIISTgYJKoZIhvcNAQcCoIISPzCCEjsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUxwFjeQPE0i8UQrfz2wCDmPT8
-# VAyggg6rMIIG6DCCBNCgAwIBAgIQd70OBbdZC7YdR2FTHj917TANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUcwrF6/cf6Us3N5uFfnr6/BGH
+# Xxiggg6rMIIG6DCCBNCgAwIBAgIQd70OBbdZC7YdR2FTHj917TANBgkqhkiG9w0B
 # AQsFADBTMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTEp
 # MCcGA1UEAxMgR2xvYmFsU2lnbiBDb2RlIFNpZ25pbmcgUm9vdCBSNDUwHhcNMjAw
 # NzI4MDAwMDAwWhcNMzAwNzI4MDAwMDAwWjBcMQswCQYDVQQGEwJCRTEZMBcGA1UE
@@ -148,16 +152,16 @@ return 0
 # QyBSNDUgRVYgQ29kZVNpZ25pbmcgQ0EgMjAyMAIMRmPFdIT8ZL4tC2njMAkGBSsO
 # AwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEM
 # BgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqG
-# SIb3DQEJBDEWBBRYG6PzREwiB/Gb1TYHPa7JTf92NDANBgkqhkiG9w0BAQEFAASC
-# AgCLtlVEKY7Y5C1Af0upwhsrGqIuPcGsiuvk734gmJhedjRddJw/5vu0Id9LhUxq
-# X9sV899qi8md3WunifP2OUc/5j2JnMr09scdpiuK+0O2M0AnJf4RUnPltTloUKlc
-# SZhIEQu4qHoEJGmbHf9e7qHm9ImdJkYBreDyysZGtiz2c5qkLRrtIVkqntM9sxfn
-# 6Fz1Hgc+8W25kvEjhxlA8vT3cGkIEWG3YNKWUm2dTBkVOR44QWnanuc3lqsuynDK
-# GAnTamp4NXrLs5lT7OdWljdPuYr7tmbLFAgo5ff9fyqZLeFb9xIQN6eKXue1SRMO
-# F4vlZlASVwpYxhzbJ/zLBU0G0Vxja3k99wbozS+5tpAj6YXxM5m5DGZX260hs/IB
-# jrGyhCpEQjCyw4ch5KvhvZX2HoK1bHr7Hfki4xotN1BuvH+eIt2Xxn5AujowAxUU
-# Vnw7/PjuEREn9SBwbg2YIHwM5+FDBOEamGEZRKu+D0ge970nalsPY7ShpKqbJjVQ
-# fNdf3KvAocm090MiTvbN95Zg//BWGWxF+R23X3xFUWlottJCf/g6yfmPKt20DfWU
-# TJji7/PGmLL1AbwFQpk9+OiuzjH+FrtZT0qeHh/lg7ucIG+ZSiDvHdWSWNzMcKz0
-# peCsEVY1n2wbWnlzRBP695jsV83nRcIEl8ZPbJ3ZvBenVw==
+# SIb3DQEJBDEWBBTMH1pbJNucBiNTAZn09OdKAbKi4TANBgkqhkiG9w0BAQEFAASC
+# AgB/WE8xP4tKuQIibDD6GW5X+eTSIoqmI+vwHq/IpAcJGkVH8qWFh4IJ1PRsZGtf
+# iGu5X5GiT0oy1C3rX+ynoW0Dc6LOyPBy7C73cEKAC3sEJTP/za+N2MiHetoggjRp
+# FujIaBRCnahq2uFBQBsBuuDDGgeYZslpROmYqGpjJD9sVe6Enz7lzWp7KhJEnmGQ
+# df1s32N/wX/Vqc40DQuWIxWVsD4opJy7ha8vAqO+jNWqiSmd6LWINA8N5JxLxm21
+# JzgQjGE5UXvhhRv39E9bcLKqJkaNdtekdeYEShI1OVkLAcOsYjAXqiT0OaKIGfZ8
+# rSYRvc6ccRbr+LVIt3HSaY4IuecSmWX++oX8PG6ZBAE3JOnYvPFxi1+6LVHC5aK3
+# At40EE9cM3Ug8H4qG46dLgv8hCGoW/fqLn1fRlw8jf7bQnLIJSacZNJZtKVrUn9f
+# GNOQMs+S+U42PZu5AM2mRGzvQsV40Z5teJS0uqH2jt9BFgcbt+PNEiAvuJmYAfHN
+# 44wniHxBc7g5jYsp4sF9qjsQkkgjycZ6OanfJskYGa1UnJqd5vvbczdhBInwDeID
+# GUF869VT9j8pDC8uGkkGL02j5NazAp67rQJqx0PQYhS5AWP/PJXXmjf5tCgdVQOA
+# 3oXoZEFeLs0wWS3oMxiW6/EjaAIbKQblime6xXcCABEbTw==
 # SIG # End signature block
