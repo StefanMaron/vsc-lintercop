@@ -9,12 +9,13 @@ $ErrorActionPreference = 'Stop'
 
 $latestRelease = Invoke-RestMethod -Uri "https://api.github.com/repos/StefanMaron/BusinessCentral.LinterCop/releases"
 
-$prerelease = $prerelease.ToString().ToLower()
-
-if ($prerelease -eq "false" -or $prerelease -eq $null) {
+if ($null -eq $prerelease) {
     $prerelease = $false
 }
-elseif ($prerelease -eq "true") {
+elseif ($prerelease.ToString().ToLower() -eq "false") {
+    $prerelease = $false
+}
+elseif ($prerelease.ToString().ToLower() -eq "true") {
     $prerelease = $true
 }
 else {
@@ -36,7 +37,7 @@ if ([string]::IsNullOrEmpty($lastVersionTimeStamp)) {
     $lastVersionTimeStamp = '0001-01-01T00:00:00Z'
 }
 
-$latestRelease.assets | ForEach-Object  {
+$latestRelease.assets | ForEach-Object {
     $asset = $_
     Join-Path $TargetPath $asset.name
     if (((Get-Date $lastVersionTimeStamp) -lt (Get-Date $latestRelease.assets[0].updated_at )) -or (-not (Test-Path (Join-Path $TargetPath $asset.name) -PathType leaf))) {
@@ -63,8 +64,8 @@ return 0
 # SIG # Begin signature block
 # MIISTgYJKoZIhvcNAQcCoIISPzCCEjsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUAlCCE5CD6mknKb5K/hbw76QE
-# Xzuggg6rMIIG6DCCBNCgAwIBAgIQd70OBbdZC7YdR2FTHj917TANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUxwFjeQPE0i8UQrfz2wCDmPT8
+# VAyggg6rMIIG6DCCBNCgAwIBAgIQd70OBbdZC7YdR2FTHj917TANBgkqhkiG9w0B
 # AQsFADBTMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTEp
 # MCcGA1UEAxMgR2xvYmFsU2lnbiBDb2RlIFNpZ25pbmcgUm9vdCBSNDUwHhcNMjAw
 # NzI4MDAwMDAwWhcNMzAwNzI4MDAwMDAwWjBcMQswCQYDVQQGEwJCRTEZMBcGA1UE
@@ -147,16 +148,16 @@ return 0
 # QyBSNDUgRVYgQ29kZVNpZ25pbmcgQ0EgMjAyMAIMRmPFdIT8ZL4tC2njMAkGBSsO
 # AwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEM
 # BgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqG
-# SIb3DQEJBDEWBBSwiUuqqiiLMQJWsRjCONAbqDkTZDANBgkqhkiG9w0BAQEFAASC
-# AgA6vS7Qxrb71R0dKmJ/8UacFO+zimSR1TTmwLg/cjCY/KGXNlPeuIjRjL3zBIlq
-# rPM43oTKyihYQGfnF01u0+qVmzxCyUcPK5enkyBHp3RWx+kwRxSKUv1hNce90nPZ
-# QlYNOQg8FPv4DvLiXYpwLMiZj9c+frOzhEoNc4/y4g0fBZgDqKh0WmZLb0FErRkW
-# FmJwjsQvH0qLtCH0IIG1baEJr5DdQLhqsm/p/leUnPXW0TRzB3D1XjPK1cJIr9D6
-# iWiPZeWEFcbpy2t9BGBc2ZbeXKDHxcUamKJvo+8/ImlEo4dLpDBvDDR7oTGlqRJB
-# YW9eF7CbHDtOTPTkV883YTh5nIVsnZu0AUJTkDSOlYMnvVAjtnGCBB5bQGOm+zq2
-# bJjEblEld7zVB+2fckf4NJuAcT7AcO3V/Q4eQKi8qxt/aY7zMNW2egabYySmhOAw
-# ktvLkxIfThx8cycbgL56kFMc+YxGxHwgDt39XFUPzCYSTKdO5sly/tkIjvbaks49
-# 785mC1EFdbxiystn4SIL7R/Q7dYP4dZ2YrIm5ZAK+cLN+y824IBtDdD9r98XHZaw
-# S6tKalE8DrFbyEiKUwbOcT9UhaOh1wt6awDdSOCMLNWFZMZRVym8gG+qTiQ7vd+8
-# PNQZYL0NnlMrb/gN5BVFYUbgrdYgbgGVBgD3YEwKEqwJJA==
+# SIb3DQEJBDEWBBRYG6PzREwiB/Gb1TYHPa7JTf92NDANBgkqhkiG9w0BAQEFAASC
+# AgCLtlVEKY7Y5C1Af0upwhsrGqIuPcGsiuvk734gmJhedjRddJw/5vu0Id9LhUxq
+# X9sV899qi8md3WunifP2OUc/5j2JnMr09scdpiuK+0O2M0AnJf4RUnPltTloUKlc
+# SZhIEQu4qHoEJGmbHf9e7qHm9ImdJkYBreDyysZGtiz2c5qkLRrtIVkqntM9sxfn
+# 6Fz1Hgc+8W25kvEjhxlA8vT3cGkIEWG3YNKWUm2dTBkVOR44QWnanuc3lqsuynDK
+# GAnTamp4NXrLs5lT7OdWljdPuYr7tmbLFAgo5ff9fyqZLeFb9xIQN6eKXue1SRMO
+# F4vlZlASVwpYxhzbJ/zLBU0G0Vxja3k99wbozS+5tpAj6YXxM5m5DGZX260hs/IB
+# jrGyhCpEQjCyw4ch5KvhvZX2HoK1bHr7Hfki4xotN1BuvH+eIt2Xxn5AujowAxUU
+# Vnw7/PjuEREn9SBwbg2YIHwM5+FDBOEamGEZRKu+D0ge970nalsPY7ShpKqbJjVQ
+# fNdf3KvAocm090MiTvbN95Zg//BWGWxF+R23X3xFUWlottJCf/g6yfmPKt20DfWU
+# TJji7/PGmLL1AbwFQpk9+OiuzjH+FrtZT0qeHh/lg7ucIG+ZSiDvHdWSWNzMcKz0
+# peCsEVY1n2wbWnlzRBP695jsV83nRcIEl8ZPbJ3ZvBenVw==
 # SIG # End signature block
