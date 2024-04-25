@@ -27,7 +27,7 @@ export function activate(context: ExtensionContext) {
 		if (lintercop && AlExtension) {
 			const os = require('os');
 			let executable = ''
-			
+
 			if (os.platform() == 'win32') {
 				executable = 'powershell.exe'
 			}
@@ -37,8 +37,9 @@ export function activate(context: ExtensionContext) {
 
 			const loadPreRelease = linterCopConfig.get('load-pre-releases')
 			var DownloadScript = lintercop.extensionPath + '/DownloadFile.ps1';
-			var targetPath = AlExtension.extensionPath + '/bin/Analyzers/"'
-			var retvalue = exec(`. "${DownloadScript}" "${targetPath} "${loadPreRelease}"`, { 'shell': executable }, (error: string, stdout: string, stderr: string) => {
+			var targetPath = AlExtension.extensionPath + '/bin/Analyzers/'
+			var alLanguageVersion = AlExtension.packageJSON.version;
+			var retvalue = exec(`. "${DownloadScript}" "${targetPath}" "${loadPreRelease}" "${alLanguageVersion}"`, { 'shell': executable }, (error: string, stdout: string, stderr: string) => {
 				var results = stdout.split("\n")
 				if (results[1].trim() == "1") {
 					window

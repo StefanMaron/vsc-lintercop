@@ -1,6 +1,7 @@
 param (
     $TargetPath,
-    $prerelease
+    $prerelease,
+    $version
 )
 $ErrorActionPreference = 'Stop'
 
