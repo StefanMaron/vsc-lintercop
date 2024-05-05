@@ -72,7 +72,7 @@ else {
 # Determine if the file needs to be updated
 $downloadArtifact = $false
 if (Test-Path(Join-Path $TargetPath $LinterCopFileName)) {
-    $versionTimeStamp = Get-Content -Path (Join-Path $TargetPath "$($LinterCopFileName).txt") -ErrorAction SilentlyContinue
+    $versionTimeStamp = Get-Content -Path (Join-Path $PSScriptRoot 'lastversion.txt') -ErrorAction SilentlyContinue
     if ([string]::IsNullOrEmpty($versionTimeStamp)) {
         $versionTimeStamp = '0001-01-01T00:00:00Z'
     }
@@ -90,7 +90,7 @@ else {
 if ($downloadArtifact) {
     Write-Host "Retrieving artifact $($asset.browser_download_url)"
     Invoke-WebRequest -Uri $asset.browser_download_url -OutFile (Join-Path $TargetPath $LinterCopFileName)
-    Set-Content -Value $asset.updated_at -Path (Join-Path $TargetPath "$($LinterCopFileName).txt")
+    Set-Content -Value $asset.updated_at -Path (Join-Path $PSScriptRoot 'lastversion.txt')
 }
 else {
     Write-Host "Current version of the $($LinterCopFileName) is up-to-date."
@@ -100,8 +100,8 @@ return 0
 # SIG # Begin signature block
 # MIIScwYJKoZIhvcNAQcCoIISZDCCEmACAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCL2e2braKqsF50
-# FO4NJhcCUw5BbcabDC9GBEiq5CVfiqCCDqswggboMIIE0KADAgECAhB3vQ4Ft1kL
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCa7cUAV5QHHJn3
+# +u1LtCR/4IHxx3ouPFT/NTKNIxAOeaCCDqswggboMIIE0KADAgECAhB3vQ4Ft1kL
 # th1HYVMeP3XtMA0GCSqGSIb3DQEBCwUAMFMxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
 # ExBHbG9iYWxTaWduIG52LXNhMSkwJwYDVQQDEyBHbG9iYWxTaWduIENvZGUgU2ln
 # bmluZyBSb290IFI0NTAeFw0yMDA3MjgwMDAwMDBaFw0zMDA3MjgwMDAwMDBaMFwx
@@ -184,17 +184,17 @@ return 0
 # BgNVBAMTKUdsb2JhbFNpZ24gR0NDIFI0NSBFViBDb2RlU2lnbmluZyBDQSAyMDIw
 # AgxGY8V0hPxkvi0LaeMwDQYJYIZIAWUDBAIBBQCggYQwGAYKKwYBBAGCNwIBDDEK
 # MAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3
-# AgELMQ4wDAYKKwYBBAGCNwIBFTAvBgkqhkiG9w0BCQQxIgQgmJcwAkecvsnARbRz
-# j/S8dx8JmaV7PPJAMBxZSncFKAUwDQYJKoZIhvcNAQEBBQAEggIAkD/j6kBZtCJH
-# VdB6gvkVpPyPgwttNo3nC0xPdjWGrGbwp6OedUfXDHtHrN56KjO5EsoaCP+b47qe
-# Z5xzo+OlVBu5+R3OahgDJrOdB8IxaQ0zjc4kk+d7Eo5RGfgsj2INWwvHl5OTkbWB
-# x6phjpQndZMpCEp3W0MyEvsCConPk+OL7g2dC9DeUao3lImh4/QWIDO4AP8d5n7Y
-# lbp/ohvb9yGYW50Xv3+wTJWMjy+R4mIutalkkRjJu+uCTwEC4d/+8fn6dF8M3haS
-# W+5+FyEoHpbr8E6Wb56QArJluCiCuZrftv+NKtjn9SBY6K0H9iaREDqBSHFi+ym0
-# N7132TQvOcwQIywbgB2jQutzJ8rsUuS+YhDBIMeqemkuHWb03aGtAhyNDFmBwQ3g
-# 1q2ywv3Kb3wACPBu/RiOAruXFaZCHrI/4daD5s+HYzO1dqSTOUIR8MpjxNxNpxR7
-# 4XO9OsHBgKMGsKbSKadBocPRPZ+e8HoCijStV+Zu6er+ftMpHFUz6/z0nJAsOcYh
-# W363HZXC41QPyrVb6f19g5wGvW9PEd39DwemO5YHk4/jLWXhxz2FMv1Ucobtn6Hc
-# LLj7CZR7YK97kXWPWh2rAG/W60lo64QRlpFdMnlKMA99LYmFots5mwowNOtQdTwX
-# etBi7fWU4d5t12Pt2f+WrL9dcg20kfk=
+# AgELMQ4wDAYKKwYBBAGCNwIBFTAvBgkqhkiG9w0BCQQxIgQgJqicR2pi3ro9eQl5
+# 8DUCO2QZd6rVaKedRrhq8cGlIr4wDQYJKoZIhvcNAQEBBQAEggIAclqzMPZCL4ul
+# 7SK3heiJZzSRjknfAepz+kmb9eCAuqd1Ch0LwS7NFOtE5PyXU4GUzxTF5VVo1/hb
+# NyvJgbeCNMmMsQPvrCpBTOWM/gUFE2mfh5ufWnz/RRshWQeFnl7WuB1zzwOY2auU
+# k4vPs9dOodN46yLLQ3wXftuuRvP/pBAwcqb18GOPrQDD3ckCDMpc7Lz8hYqEO11a
+# TfyPHWqXiszs0Zo5JpN2UWy4EryVNu4ej/s7USEvlofeIRqObzFAp/IYaLT4JPRf
+# Ey6LhEH/GY6nKpuu9iEmtmcY8XMN9G38skjdluOOZWWnAYdqTs72DOl4LDZaZyTL
+# UbGfc7dj+mU3AFc3XyGHdp2B4Yz7t4pMw6BBVvyigo8udzONN1d6cgGLoLBoLmQb
+# AeQr3tbNibmAc4HY/XRddEtej2mTePTdtpcz8ixkedfo3ncFYM8CiHXdoXAC7hND
+# EczBGaBa6aykG4V/XN0Hz5RgmCkrlKi/My+CEsGN8kL7CXBITvPteO6jfWfUyAN6
+# i1bf5sGX1YIASyURmipleLGFGBJJgwOjZF+OrvGwUg2nbGppCEYd3xVurXUCDpHA
+# 3gP0ObFGAP5saRUuyGlEYjXSFsBN/6F0/6UXDKBNA5rZPshN8THNFsVcjSmxLDrc
+# ibckH8zNq/SEDcatoowYh9KivSnQEDc=
 # SIG # End signature block
