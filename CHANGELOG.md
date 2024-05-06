@@ -1,6 +1,10 @@
 # Change Log
 
-All notable changes to the "businesscentral-lintercop" extension will be documented in this file.
+All notable changes to the "businesscentral-lintercop" extension will be documented in this file.ill be documented in this file.
+
+## [0.1.7]
+
+- Changed download logic to support automatic download of Linter Cop releases compiled for older AL Language Versions.
 
 ## [0.1.6]
 
