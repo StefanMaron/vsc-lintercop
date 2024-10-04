@@ -7,6 +7,9 @@ This extensions provides auto updates for the BusinessCentral.LinterCop. This co
 By default the extension checks if the dll is still there (and did not get deleted due to updates of the AL Extension) and if a new version is released.
 If one case is true, the latest version of the dll will be downloaded.
 
+Download require `CurrentUser` or `LocalMachine` PowerShell execution policy set to at least `RemoteSigned` in order to allow the Powershell script in the extension to run and download the assembly.
+Note: You can use PowerShell command `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`
+
 In order to activate the LinterCop all you need to do is, to click the `AL Cop` indicator on the bottom bar which shows the active code analyzers for the current settings context:  
 ![bottom_bar](images/bottombar.png)
 
