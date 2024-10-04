@@ -35,7 +35,7 @@ export function activate(context: ExtensionContext) {
             for (const repo of repositories) {
                 try {
                     const apiUrl = convertToApiUrl(repo.url);
-                    var downloadUrl = await getDownloadUrl(apiUrl, loadPreRelease, alLanguageVersion, repo.token);
+                    var downloadUrl = await getDownloadUrl(apiUrl, loadPreRelease, alLanguageVersion, repo.token, repo.fileName);
 
                     const latestReleaseDate = await getLatestVersion(apiUrl, loadPreRelease, repo.token);
                     const currentVersionDate = getCurrentVersionDate(path.join(targetPath, repo.fileName));
@@ -211,7 +211,7 @@ function getCurrentVersionDate(filePath: string): number | null {
     return null;
 }
 
-async function getDownloadUrl(apiUrl: string, loadPreRelease: boolean, alLanguageVersion: string, token: string): Promise<string> {
+async function getDownloadUrl(apiUrl: string, loadPreRelease: boolean, alLanguageVersion: string, token: string, fileName: string): Promise<string> {
     return new Promise((resolve, reject) => {
         const options: https.RequestOptions = {
             headers: { 'User-Agent': 'Node.js' }
@@ -230,7 +230,15 @@ async function getDownloadUrl(apiUrl: string, loadPreRelease: boolean, alLanguag
                     reject(new Error('GitHub API rate limit exceeded. Please try again later.'));
                     return;
                 }
-                const asset = release.assets.find((asset: any) => asset.name.includes('BusinessCentral.LinterCop') && asset.name.includes(alLanguageVersion));
+
+                // Try to find an asset that matches the AL version
+                let asset = release.assets.find((asset: any) => asset.name.includes(alLanguageVersion));
+                
+                // If no matching AL version asset is found, try to find an asset that matches the file name
+                if (!asset) {
+                    asset = release.assets.find((asset: any) => asset.name.includes(fileName));
+                }
+
                 if (asset) {
                     resolve(asset.browser_download_url);
                 } else {
