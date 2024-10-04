@@ -2,6 +2,14 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.ill be documented in this file.
 
+## [0.1.8]
+
+- Added support for custom analyzers from different GitHub repositories, including private repositories that require authentication.
+- Enhanced the status bar to dynamically display the short names of active analyzers.
+- Improved the selection of analyzers to include custom analyzers from the configuration.
+- Updated log messages and information dialogs to show proper information and removed all debug messages.
+- Added capability to Download the analyzers in typescript, removed the Powershell Script
+
 ## [0.1.7]
 
 - Changed download logic to support automatic download of Linter Cop releases compiled for older AL Language Versions.
