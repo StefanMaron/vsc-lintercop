@@ -27,7 +27,6 @@
 		"Linters"
 	],
 	"activationEvents": [
-		"onCommand:businesscentral-lintercop.downloadCop",
 		"*"
 	],
 	"main": "./out/extension.js",
@@ -38,49 +37,34 @@
 				"title": "LC: Download Linter Cop"
 			}
 		],
-		"configuration": [
-			{
-				"title": "BusinessCentral.LinterCop",
-				"properties": {
-					"linterCop.autoDownload": {
-						"type": "boolean",
-						"default": true,
-						"description": "Whether or not the dll should be automatically downloaded if a newer version is available"
-					},
-					"linterCop.load-pre-releases": {
-						"type": "boolean",
-						"default": false,
-						"description": "Set this to true, if you want to receive re-releases automagically."
-					}
-				}
+		"configuration": {
+		  "type": "object",
+		  "title": "LinterCop Configuration",
+		  "properties": {
+			"linterCop.load-pre-releases": {
+			  "type": "boolean",
+			  "default": false,
+			  "description": "Load pre-release versions of LinterCop.",
+			  "scope": "resource"
+			},
+			"linterCop.autoDownload": {
+			  "type": "boolean",
+			  "default": false,
+			  "description": "Automatically download the latest version of LinterCop.",
+			  "scope": "resource"
 			}
-		],
-		"jsonValidation": [
-			{
-				"fileMatch": "LinterCop.json",
-				"url": "./syntaxes/LinterSettingsSyntax.json"
-			}
-		]
-	},
-	"scripts": {
+		  }
+		}
+	  },
+	  "scripts": {
 		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/vscode": "^1.70.0",
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.0.4",
-		"@types/node": "^12.11.7",
-		"eslint": "^7.15.0",
-		"@typescript-eslint/eslint-plugin": "^4.9.0",
-		"@typescript-eslint/parser": "^4.9.0",
-		"glob": "^7.1.6",
-		"mocha": "^8.1.3",
-		"typescript": "^4.1.2",
-		"vscode-test": "^1.4.1"
+		"compile": "tsc -p ./"
+	  },
+	  "devDependencies": {
+		"typescript": "^4.0.3",
+		"vscode": "^1.1.37",
+		"tslint": "^6.1.3",
+		"@types/node": "^14.14.6",
+		"@types/vscode": "^1.50.0"
+	  }
 	}
-}
