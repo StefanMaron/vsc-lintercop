@@ -2,6 +2,10 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.ill be documented in this file.
 
+## [0.1.9]
+
+- Fixed prerelease version download of the linter cop
+
 ## [0.1.8]
 
 - Added support for custom analyzers from different GitHub repositories, including private repositories that require authentication.

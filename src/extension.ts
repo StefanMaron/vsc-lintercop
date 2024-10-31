@@ -219,25 +219,26 @@ async function getDownloadUrl(apiUrl: string, loadPreRelease: boolean, alLanguag
         if (token) {
             (options.headers as any)['Authorization'] = `token ${token}`;
         }
-        https.get(`${apiUrl}/releases/latest`, options, response => {
+        https.get(`${apiUrl}/releases`, options, response => {
             let data = '';
             response.on('data', chunk => {
                 data += chunk;
             });
             response.on('end', () => {
-                const release = JSON.parse(data);
-                if (release.message && release.message.includes("API rate limit exceeded")) {
+                const releases = JSON.parse(data);
+                const latestRelease = releases.find((release: any) => loadPreRelease || !release.prerelease);
+                if (latestRelease.message && latestRelease.message.includes("API rate limit exceeded")) {
                     reject(new Error('GitHub API rate limit exceeded. Please try again later.'));
                     return;
                 }
 
                 // Try to find an asset that matches the AL version
-                let asset = release.assets.find((asset: any) => asset.name.includes(alLanguageVersion));
+                let asset = latestRelease.assets.find((asset: any) => asset.name.includes(alLanguageVersion));
                 
                 // If no matching AL version asset is found, try to find an asset that matches the file name
                 if (!asset) {
-                    asset = release.assets.find((asset: any) => asset.name.includes(fileName));
                 }
+                asset = latestRelease.assets.find((asset: any) => asset.name.includes(fileName));
 
                 if (asset) {
                     resolve(asset.browser_download_url);
