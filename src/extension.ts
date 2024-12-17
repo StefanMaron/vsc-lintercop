@@ -7,7 +7,7 @@ let outputChannel: OutputChannel;
 
 export function activate(context: ExtensionContext) {
     console.log('Activating BusinessCentral LinterCop extension...');
-    
+
     // Initialize the output channel
     outputChannel = window.createOutputChannel('LinterCop');
     outputChannel.show(true);
@@ -15,7 +15,7 @@ export function activate(context: ExtensionContext) {
 
     console.log('BusinessCentral LinterCop extension is now active!');
     outputChannel.appendLine('BusinessCentral LinterCop extension is now active!');
-    
+
     var statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
     var uri = GetCurrentFileURI();
     const linterCopConfig = workspace.getConfiguration('linterCop', uri);
@@ -35,12 +35,12 @@ export function activate(context: ExtensionContext) {
             for (const repo of repositories) {
                 try {
                     const apiUrl = convertToApiUrl(repo.url);
-                    var downloadUrl = await getDownloadUrl(apiUrl, loadPreRelease, alLanguageVersion, repo.token, repo.fileName);
 
-                    const latestReleaseDate = await getLatestVersion(apiUrl, loadPreRelease, repo.token);
+                    const latestReleaseDate = await getLatestVersion(apiUrl, loadPreRelease, repo.token, alLanguageVersion, repo.fileName);
                     const currentVersionDate = getCurrentVersionDate(path.join(targetPath, repo.fileName));
 
                     if (latestReleaseDate && (!currentVersionDate || latestReleaseDate > currentVersionDate)) {
+                        var downloadUrl = await getDownloadUrl(apiUrl, loadPreRelease, alLanguageVersion, repo.token, repo.fileName);
                         await downloadFile(downloadUrl, path.join(targetPath, repo.fileName), repo.token);
                         window.showInformationMessage(`A new version of ${repo.shortName} was downloaded successfully from ${repo.url}.`, 'OK', 'Show release notes')
                             .then(selection => {
@@ -175,7 +175,7 @@ function convertToApiUrl(repoUrl: string): string {
     throw new Error('Invalid GitHub repository URL');
 }
 
-async function getLatestVersion(apiUrl: string, loadPreRelease: boolean, token: string): Promise<number | null> {
+async function getLatestVersion(apiUrl: string, loadPreRelease: boolean, token: string, alLanguageVersion: string, fileName: string): Promise<number | null> {
     return new Promise((resolve, reject) => {
         const options: https.RequestOptions = {
             headers: { 'User-Agent': 'Node.js' }
@@ -191,8 +191,13 @@ async function getLatestVersion(apiUrl: string, loadPreRelease: boolean, token: 
             response.on('end', () => {
                 const releases = JSON.parse(data);
                 const latestRelease = releases.find((release: any) => loadPreRelease || !release.prerelease);
+
                 if (latestRelease) {
-                    resolve(new Date(latestRelease.created_at).getTime());
+                    let asset = latestRelease.assets.find((asset: any) => asset.name.includes(alLanguageVersion));
+                    if (!asset) {
+                        asset = latestRelease.assets.find((asset: any) => asset.name.includes(fileName));
+                    }
+                    resolve(new Date(asset.created_at).getTime());
                 } else {
                     resolve(null);
                 }
@@ -234,11 +239,11 @@ async function getDownloadUrl(apiUrl: string, loadPreRelease: boolean, alLanguag
 
                 // Try to find an asset that matches the AL version
                 let asset = latestRelease.assets.find((asset: any) => asset.name.includes(alLanguageVersion));
-                
+
                 // If no matching AL version asset is found, try to find an asset that matches the file name
                 if (!asset) {
+                    asset = latestRelease.assets.find((asset: any) => asset.name.includes(fileName));
                 }
-                asset = latestRelease.assets.find((asset: any) => asset.name.includes(fileName));
 
                 if (asset) {
                     resolve(asset.browser_download_url);

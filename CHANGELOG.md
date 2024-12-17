@@ -2,6 +2,10 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.ill be documented in this file.
 
+## [0.1.10]
+
+- Fix to check the latest version based on the assets on the release instead of the just the release itsself
+
 ## [0.1.9]
 
 - Fixed prerelease version download of the linter cop
