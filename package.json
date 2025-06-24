@@ -27,7 +27,9 @@
         "Linters"
     ],
     "activationEvents": [
-        "*"
+        "onLanguage:al",
+        "workspaceContains:app.json",
+        "onCommand:al.go"
     ],
     "main": "./out/extension.js",
     "contributes": {

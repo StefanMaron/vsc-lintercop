@@ -10,7 +10,6 @@ export function activate(context: ExtensionContext) {
 
     // Initialize the output channel
     outputChannel = window.createOutputChannel('LinterCop');
-    outputChannel.show(true);
     outputChannel.appendLine('LinterCop output channel created.');
 
     console.log('BusinessCentral LinterCop extension is now active!');
