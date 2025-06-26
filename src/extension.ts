@@ -61,7 +61,6 @@ export function activate(context: ExtensionContext) {
                 }
             }
         } else {
-            window.showErrorMessage('Required extensions are not available.');
             outputChannel.appendLine('Required extensions are not available.');
         }
     });
