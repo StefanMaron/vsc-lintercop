@@ -10,7 +10,6 @@ export function activate(context: ExtensionContext) {
 
     // Initialize the output channel
     outputChannel = window.createOutputChannel('LinterCop');
-    outputChannel.show(true);
     outputChannel.appendLine('LinterCop output channel created.');
 
     console.log('BusinessCentral LinterCop extension is now active!');
@@ -62,7 +61,6 @@ export function activate(context: ExtensionContext) {
                 }
             }
         } else {
-            window.showErrorMessage('Required extensions are not available.');
             outputChannel.appendLine('Required extensions are not available.');
         }
     });
