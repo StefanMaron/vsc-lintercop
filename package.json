@@ -86,7 +86,13 @@
                     "scope": "resource"
                 }
             }
-        }
+        },
+		"jsonValidation": [
+			{
+				"fileMatch": "LinterCop.json",
+				"url": "./syntaxes/LinterSettingsSyntax.json"
+			}
+		]
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

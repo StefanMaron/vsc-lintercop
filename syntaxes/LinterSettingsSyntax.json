@@ -42,6 +42,14 @@
       "description": "Enables the LC0016 rule for API objects. (Caption is missing)",
       "type": "boolean",
       "default": false
+    },
+    "languagesToTranslate": {
+      "description": "List of languages to translate the captions into.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
     }
   }
 }
