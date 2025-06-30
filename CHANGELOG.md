@@ -2,6 +2,12 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.ill be documented in this file.
 
+## [0.1.11]
+- Dont show output automatically, thanks @jwikman
+- Dont show error message if AL Language is not loaded, thanks @jwikman
+- Added json validation for `LinterCop.json` back in
+
+
 ## [0.1.10]
 
 - Fix to check the latest version based on the assets on the release instead of the just the release itsself
