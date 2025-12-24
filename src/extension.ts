@@ -244,7 +244,11 @@ async function getDownloadUrl(apiUrl: string, loadPreRelease: boolean, alLanguag
                 }
 
                 if (asset) {
-                    resolve(asset.browser_download_url);
+                    if (token) {
+                        resolve(asset.url);
+                    } else {
+                        resolve(asset.browser_download_url);
+                    }
                 } else {
                     reject(new Error('No suitable asset found in the latest release.'));
                 }
@@ -264,6 +268,7 @@ function downloadFile(url: string, dest: string, token: string): Promise<void> {
         };
         if (token) {
             (options.headers as any)['Authorization'] = `token ${token}`;
+            (options.headers as any)['Accept'] = 'application/octet-stream';
         }
         const request = https.get(url, options, response => {
             if (response.statusCode === 302 && response.headers.location) {
