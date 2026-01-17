@@ -18,7 +18,7 @@
     "repository": {
         "url": "https://github.com/StefanMaron/vsc-lintercop"
     },
-    "version": "0.1.11",
+    "version": "0.1.12",
     "preview": true,
     "engines": {
         "vscode": "^1.70.0"

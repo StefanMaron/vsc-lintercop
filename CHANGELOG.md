@@ -2,6 +2,9 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.ill be documented in this file.
 
+## [0.1.12]
+- Fixed download from private repositories by using proper GitHub API authentication, thanks @tkroes
+
 ## [0.1.11]
 - Dont show output automatically, thanks @jwikman
 - Dont show error message if AL Language is not loaded, thanks @jwikman
