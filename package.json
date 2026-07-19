@@ -78,31 +78,32 @@
                             }
                         }
                     },
-                    "default": [{
-                        "url": "https://github.com/StefanMaron/BusinessCentral.LinterCop",
-                        "shortName": "BcLntr",
-                        "fileName": "BusinessCentral.LinterCop.dll"
-                    }],
+                    "default": [
+                        {
+                            "url": "https://github.com/StefanMaron/BusinessCentral.LinterCop",
+                            "shortName": "BcLntr",
+                            "fileName": "BusinessCentral.LinterCop.dll"
+                        }
+                    ],
                     "scope": "resource"
                 }
             }
         },
-		"jsonValidation": [
-			{
-				"fileMatch": "LinterCop.json",
-				"url": "./syntaxes/LinterSettingsSyntax.json"
-			}
-		]
+        "jsonValidation": [
+            {
+                "fileMatch": "LinterCop.json",
+                "url": "./syntaxes/LinterSettingsSyntax.json"
+            }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./"
     },
     "devDependencies": {
-        "typescript": "^4.0.3",
-        "vscode": "^1.1.37",
-        "tslint": "^6.1.3",
         "@types/node": "^14.14.6",
-        "@types/vscode": "^1.50.0"
+        "@types/vscode": "^1.50.0",
+        "tslint": "^6.1.3",
+        "typescript": "^4.0.3"
     }
 }
