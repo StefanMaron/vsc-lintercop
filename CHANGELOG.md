@@ -2,6 +2,9 @@
 
 All notable changes to the "businesscentral-lintercop" extension will be documented in this file.ill be documented in this file.
 
+## [0.1.13]
+- Added deprecation notice: BusinessCentral.LinterCop has reached end-of-life and stops working with AL Language v18 (expected October 2026). See [the announcement](https://github.com/StefanMaron/BusinessCentral.LinterCop/issues/1227) and migrate to [ALCops](https://alcops.dev/). The notification can be dismissed permanently via "Don't show again".
+
 ## [0.1.12]
 - Fixed download from private repositories by using proper GitHub API authentication, thanks @tkroes
 

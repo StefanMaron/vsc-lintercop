@@ -5,12 +5,35 @@ import * as path from 'path';
 
 let outputChannel: OutputChannel;
 
+const deprecationNoticeUrl = 'https://github.com/StefanMaron/BusinessCentral.LinterCop/issues/1227';
+const deprecationNoticeDismissedKey = 'lintercop.deprecationNoticeDismissed';
+
+function showDeprecationNotice(context: ExtensionContext) {
+    outputChannel.appendLine(`BusinessCentral.LinterCop has reached end-of-life and stops working with AL Language v18 (expected October 2026). See ${deprecationNoticeUrl} for details.`);
+
+    if (context.globalState.get<boolean>(deprecationNoticeDismissedKey))
+        return;
+
+    window.showWarningMessage(
+        '⚠️ Action required before Oct 2026: BusinessCentral.LinterCop has reached end-of-life.',
+        'Show me what to do',
+        "Don't show again"
+    ).then(selection => {
+        if (selection === 'Show me what to do')
+            env.openExternal(Uri.parse(deprecationNoticeUrl));
+        if (selection === "Don't show again")
+            context.globalState.update(deprecationNoticeDismissedKey, true);
+    });
+}
+
 export function activate(context: ExtensionContext) {
     console.log('Activating BusinessCentral LinterCop extension...');
 
     // Initialize the output channel
     outputChannel = window.createOutputChannel('LinterCop');
     outputChannel.appendLine('LinterCop output channel created.');
+
+    showDeprecationNotice(context);
 
     console.log('BusinessCentral LinterCop extension is now active!');
     outputChannel.appendLine('BusinessCentral LinterCop extension is now active!');
