@@ -2,6 +2,19 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+> [!WARNING]
+> **⚠️ Deprecated — action required before October 2026**
+>
+> [BusinessCentral.LinterCop](https://github.com/StefanMaron/BusinessCentral.LinterCop) has reached end-of-life. The last supported AL Language version is the release from 25 March 2026, and once AL Language v18 becomes the current release (expected around October 2026), BusinessCentral.LinterCop will stop working.
+>
+> Development has moved to [ALCops](https://alcops.dev/), the successor to BusinessCentral.LinterCop. We strongly recommend migrating sooner rather than later:
+>
+> * 📢 Announcement: [Action Required: Migrate to ALCops before October 2026](https://github.com/StefanMaron/BusinessCentral.LinterCop/issues/1227)
+> * 🚀 Get started: [alcops.dev](https://alcops.dev/)
+> * 📖 Migration guide: [LinterCop Migration Guide](https://alcops.dev/docs/lintercop-migration/)
+>
+> This extension itself keeps working for downloading analyzers from your own (private) repositories via the `linterCop.repositories` setting.
+
 This extensions provides auto updates for the BusinessCentral.LinterCop. This cop is basically just an dll file and needs to be placed into the folder of the AL vs code extension. If you want to do this manually, you dont need this extension ;)
 
 By default the extension checks if the dll is still there (and did not get deleted due to updates of the AL Extension) and if a new version is released.
